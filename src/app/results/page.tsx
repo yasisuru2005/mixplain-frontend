@@ -56,7 +56,6 @@ const AnimatedNumber = ({
   return <motion.span>{display}</motion.span>;
 };
 
-// HELPER: Centralized config so both the Node and the Modal can use the exact same styles/icons
 const getTypeConfig = (type: string) => {
   switch (type) {
     case "loudness":
@@ -83,7 +82,7 @@ const getTypeConfig = (type: string) => {
   }
 };
 
-// 1. UPDATED NODE: Now acts purely as a clickable trigger
+
 const DiagnosticNode = ({ issue, side, delay, onClick }: any) => {
   const [isHovered, setIsHovered] = useState(false);
   const { icon: Icon, styles } = getTypeConfig(issue.type);
@@ -126,12 +125,11 @@ const DiagnosticNode = ({ issue, side, delay, onClick }: any) => {
   );
 };
 
-// 2. NEW MODAL COMPONENT: Handles the background blur and drop-in animation
+
 const IssueModal = ({ issue, onClose }: { issue: any, onClose: () => void }) => {
   const [displayedFix, setDisplayedFix] = useState("");
   const { icon: Icon, title, styles } = getTypeConfig(issue.type);
 
-  // Typewriter effect runs when modal mounts
   useEffect(() => {
     let i = 0;
     const interval = setInterval(() => {
@@ -143,7 +141,6 @@ const IssueModal = ({ issue, onClose }: { issue: any, onClose: () => void }) => 
   }, [issue.fix]);
 
   return (
-    // FIX: Full screen backdrop that captures clicks to close
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -151,9 +148,8 @@ const IssueModal = ({ issue, onClose }: { issue: any, onClose: () => void }) => 
       onClick={onClose}
       className="fixed inset-0 z-[100] flex items-center justify-center bg-[#020611]/[0.05] backdrop-blur-sm p-4"
     >
-      {/* FIX: The Card itself. Stops propagation so clicking inside doesn't close it */}
+
       <motion.div
-        // Animates from y: -300 (top center/red circle) down to y: 0 (center screen/red box)
         initial={{ opacity: 0, scale: 0.5, y: -300, filter: "blur(10px)" }}
         animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
         exit={{ opacity: 0, scale: 0.5, y: -300, filter: "blur(10px)" }}
@@ -279,13 +275,6 @@ export default function ResultsPage() {
     );
   }
 
-  // const allIssues = [
-  //   ...(result.issues.loudness || []).map((i: any) => ({ ...i, type: "loudness" })),
-  //   ...(result.issues.dynamics || []).map((i: any) => ({ ...i, type: "dynamics" })),
-  //   ...(result.issues.stereo || []).map((i: any) => ({ ...i, type: "stereo" })),
-  //   ...(result.issues.mix_balance || []).map((i: any) => ({ ...i, type: "mix_balance" })),
-  // ];
-
   const allIssues = [
     ...(result.issues?.loudness || []).map((i: any) => ({ ...i, type: "loudness" })),
     ...(result.issues?.dynamics || []).map((i: any) => ({ ...i, type: "dynamics" })),
@@ -300,7 +289,6 @@ export default function ResultsPage() {
   return (
     <div className="relative min-h-screen bg-[#030712] text-slate-200 overflow-hidden font-sans selection:bg-cyan-500/30">
       
-      {/* FIX: Render the Issue Modal overlay if an issue is selected */}
       <AnimatePresence>
         {selectedIssue && (
           <IssueModal issue={selectedIssue} onClose={() => setSelectedIssue(null)} />

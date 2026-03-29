@@ -4,13 +4,6 @@ import React, { useRef, useId, useEffect, CSSProperties, ChangeEvent } from 'rea
 import { animate, useMotionValue, AnimationPlaybackControls } from 'framer-motion';
 import { UploadCloud, Zap, Disc, Music2 } from 'lucide-react';
 
-// --- VISUAL TYPES ---
-// interface ResponsiveImage {
-//     src: string;
-//     alt?: string;
-//     srcSet?: string;
-// }
-
 interface AnimationConfig {
     preview?: boolean;
     scale: number;
@@ -108,16 +101,15 @@ export function EtheralShadow({
                 overflow: "hidden",
                 position: "relative",
                 width: "100%",
-                height: "100vh", // FIXED: Changed from 600px to 100vh to fill screen
+                height: "100vh", 
                 backgroundColor: "#0f1115",
-                display: "flex",        // FIXED: Added Flex to center content perfectly
-                alignItems: "center",   // FIXED: Vertical Center
-                justifyContent: "center", // FIXED: Horizontal Center
+                display: "flex",       
+                alignItems: "center",  
+                justifyContent: "center", 
                 ...style
             }}
         >
-            {/* --- LAYER 1: SVG BACKGROUND (The Waving Smoke) --- */}
-            {/* zIndex: 0 (Bottom) */}
+
             <div
                 style={{
                     position: "absolute",
@@ -178,8 +170,7 @@ export function EtheralShadow({
                 />
             </div>
 
-            {/* --- LAYER 2: NOISE TEXTURE --- */}
-            {/* zIndex: 1 (Middle) - Low enough to be behind text, High enough to be over smoke */}
+
             {noise && noise.opacity > 0 && (
                 <div
                     style={{
@@ -189,39 +180,34 @@ export function EtheralShadow({
                         backgroundSize: noise.scale * 200,
                         backgroundRepeat: "repeat",
                         opacity: noise.opacity / 2,
-                        zIndex: 1, // FIXED: Lowered from 20 to 1 so it sits BEHIND text
+                        zIndex: 1, 
                         pointerEvents: "none"
                     }}
                 />
             )}
 
-            {/* --- LAYER 3: CONTENT (Text & Buttons) --- */}
-            {/* zIndex: 10 (Top) - Ensures crisp text without grain overlay */}
             <div
                 style={{
-                    position: "relative", // Changed from absolute to relative for better flex behavior
+                    position: "relative", 
                     textAlign: "center",
-                    zIndex: 10, // FIXED: Higher than Noise (1) and Smoke (0)
+                    zIndex: 10, 
                     width: "100%",
                     maxWidth: "800px",
                     padding: "0 20px"
                 }}
             >
 
-                {/* 2. TITLE */}
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-4 drop-shadow-2xl">
                     Explainable AI for <br />
                     <span className="text-gray-300">Professional Mixing</span>
                 </h1>
 
-                {/* 3. SUBTITLE */}
                 <p className="mx-auto max-w-[600px] text-gray-300 md:text-lg font-light mb-8 drop-shadow-md">
                    Upload your track. Get a detailed spectral analysis, genre detection, and actionable fix suggestions in seconds.
                 </p>
 
-                {/* 4. INTERACTION AREA */}
                 <div className="w-full max-w-sm mx-auto space-y-4">
-                    {/* FILE SELECTOR */}
+
                     <div className="relative group">
                         <input
                             type="file"
@@ -257,7 +243,6 @@ export function EtheralShadow({
                         </label>
                     </div>
 
-                    {/* ANALYZE BUTTON */}
                     <button
                         onClick={onUpload}
                         disabled={!file || loading}

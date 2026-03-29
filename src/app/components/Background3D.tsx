@@ -59,12 +59,12 @@ function RippleBackground({ isLoading, mode }: { isLoading: boolean, mode: strin
 
   useEffect(() => {
     if (mode === 'results') {
-      setPhase('hidden'); // 0 to 400ms: Hide ripples while orb shrinks
-      const t1 = setTimeout(() => setPhase('shockwave'), 400); // 400ms: SHOCKWAVE!
-      const t2 = setTimeout(() => setPhase('normal'), 1200);   // 1200ms: Settle down
+      setPhase('hidden'); 
+      const t1 = setTimeout(() => setPhase('shockwave'), 400); 
+      const t2 = setTimeout(() => setPhase('normal'), 1200);  
       return () => { clearTimeout(t1); clearTimeout(t2); };
     } else {
-      setPhase(isLoading ? 'loading' : 'normal'); // Loading = Reverse ripples
+      setPhase(isLoading ? 'loading' : 'normal'); 
     }
   }, [isLoading, mode]);
 
@@ -100,17 +100,17 @@ function RippleBackground({ isLoading, mode }: { isLoading: boolean, mode: strin
     let targetSpeed = 1.0;
     let targetOpac = 1.0;
 
-    if (phase === 'loading') { targetSpeed = -6.0; targetOpac = 1.0; }      // Sucking inward
-    else if (phase === 'hidden') { targetSpeed = 0.0; targetOpac = 0.0; }   // Invisible tension
-    else if (phase === 'shockwave') { targetSpeed = 12.0; targetOpac = 1.0; } // EXPLOSION OUTWARD
-    else { targetSpeed = mode === 'results' ? 0.25 : 1.0; targetOpac = 1.0; }                           // Normal idle
+    if (phase === 'loading') { targetSpeed = -6.0; targetOpac = 1.0; }      
+    else if (phase === 'hidden') { targetSpeed = 0.0; targetOpac = 0.0; }   
+    else if (phase === 'shockwave') { targetSpeed = 12.0; targetOpac = 1.0; } 
+    else { targetSpeed = mode === 'results' ? 0.25 : 1.0; targetOpac = 1.0; }                           
 
-    // Smooth physical acceleration/deceleration
+    
     speedRef.current = THREE.MathUtils.damp(speedRef.current, targetSpeed, 4, delta);
     timeRef.current += delta * speedRef.current;
     mat.uniforms.uTime.value = timeRef.current;
 
-    // Snap visibility
+    
     mat.uniforms.uOpacity.value = THREE.MathUtils.damp(mat.uniforms.uOpacity.value, targetOpac, 12, delta);
   });
 
@@ -146,11 +146,11 @@ function ParticleClusters({ isLoading }: { isLoading: boolean }) {
     pointsRef.current.rotation.z = Math.sin(t * 0.035) * 0.045;
     pointsRef.current.rotation.y = t * 0.006;
 
-    // Fade to 0 opacity when loading, preventing the white dot
+    
     const targetOpacity = isLoading ? 0.0 : 0.38;
     matRef.current.opacity = THREE.MathUtils.damp(matRef.current.opacity, targetOpacity, 4, delta);
 
-    // Gently scale, but don't crush to 0
+   
     const targetScale = isLoading ? 0.5 : 1;
     pointsRef.current.scale.setScalar(THREE.MathUtils.damp(pointsRef.current.scale.x, targetScale, 4, delta));
   });
@@ -203,14 +203,14 @@ function EtherealOrb({ isLoading, mode, result }: { isLoading: boolean, mode: st
     let targetSpeed = 0.22;
 
     if (phase === 'loading') {
-      targetScale = 0.85;       // Visibly shrinks, but doesn't vanish
-      targetSpeed = 8.0;      // Insanely fast spin
+      targetScale = 0.85;      
+      targetSpeed = 8.0;      
     } else if (phase === 'shrinking') {
-      targetScale = 0.15;      // Tiny, dense core building tension
-      targetSpeed = 30.0;      // Maximum spin right before pop
+      targetScale = 0.15;      
+      targetSpeed = 30.0;      
     } else if (phase === 'bursting') {
-      targetScale = 1.6;       // The explosion overshoot
-      targetSpeed = 2.0;       // Rapid slow-down
+      targetScale = 1.6;      
+      targetSpeed = 2.0;      
     } else if (phase === 'settled' || phase === 'normal') {
       targetScale = 1 + Math.sin(t * 0.9) * 0.025;
       targetSpeed = 0.22;
@@ -218,15 +218,15 @@ function EtherealOrb({ isLoading, mode, result }: { isLoading: boolean, mode: st
       pointsRef.current.rotation.z = Math.cos(t * 0.3) * 0.08;
     }
 
-    // Apply exact scale and speed physics
+    
     pointsRef.current.scale.setScalar(THREE.MathUtils.damp(pointsRef.current.scale.x, targetScale, 8, delta));
     
-    // FIX: Accelerate smoothly instead of jumping the rotation timeline
+   
     speedRef.current = THREE.MathUtils.damp(speedRef.current, targetSpeed, 3, delta);
     pointsRef.current.rotation.y += speedRef.current * delta;
 
     if (haloRef.current) {
-      // Keep the halo glowing bright while it loads and shrinks to maintain focus
+      
       const targetOpac = phase === 'normal' || phase === 'settled' ? 0.05 : 0.15;
       (haloRef.current.material as THREE.MeshBasicMaterial).opacity = THREE.MathUtils.damp((haloRef.current.material as THREE.MeshBasicMaterial).opacity, targetOpac, 4, delta);
     }

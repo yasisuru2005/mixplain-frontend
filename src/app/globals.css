@@ -2,12 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ========================================
-  APP-WIDE SPATIAL UI OVERRIDES
-  ========================================
-*/
 
-/* 1. Aggressive global reset for Next.js root elements */
 html, body, #__next, [data-reactroot] {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -20,7 +15,6 @@ body::-webkit-scrollbar,
   display: none; /* Chrome, Safari and Opera */
 }
 
-/* 2. Custom Tailwind Utility Class (Just in case we need it on a specific div) */
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
